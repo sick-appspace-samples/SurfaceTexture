@@ -8,7 +8,7 @@
 
   How to Run:
   Starting this sample is possible either by running the app (F5) or
-  debugging (F7+F10). Setting breakpoint on the first row inside the
+  debugging (F7+F10). Setting a breakpoint on the first row inside the
   'main' function allows debugging step-by-step.
   Results can be seen in the image viewer on the DevicePage.
   Restarting the Sample may be necessary to show images after loading the webpage.
@@ -29,7 +29,6 @@ local DELAY = 500
 
 -- Creating viewer
 local viewer = View.create()
-viewer:setID('viewer2D')
 
 -- Setting up graphical overlay attributes
 local decoNeutral = View.ShapeDecoration.create()
@@ -88,6 +87,8 @@ local function main()
   print('App finished.')
 end
 
+--The following registration is part of the global scope which runs once after startup
+--Registration of the 'main' function to the 'Engine.OnStarted' event
 Script.register('Engine.OnStarted', main)
 
 --End of Function and Event Scope--------------------------------------------------
