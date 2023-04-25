@@ -7,12 +7,9 @@ print('AppEngine Version: ' .. Engine.getVersion())
 local DELAY = 500
 
 -- Creating viewer
-local viewer = View.create('viewer2D1')
+local viewer = View.create()
 
 -- Setting up graphical overlay attributes
-local decoNeutral = View.ShapeDecoration.create()
-decoNeutral:setFillColor(230, 230, 0, 80) -- Transparent yellow
-
 local decoPass = View.PixelRegionDecoration.create()
 decoPass:setColor(0, 230, 0, 80) -- Transparent green
 
@@ -47,17 +44,16 @@ local function main()
   Script.sleep(DELAY * 2) -- for demonstration purpose only
 
   viewer:clear()
-  local imageID = viewer:addImage(img)
+  viewer:addImage(img)
   local failedCookies = 0
-
   -- For each cookie, estimate the orientation based on texture statistics
-  for i = 1, #cookieObjects do
-    local _, _, _, stddev = cookieObjects[i]:getStatistics(edgeImg)
-    if stddev > 40 then
-      viewer:addPixelRegion(cookieObjects[i], decoFail, nil, imageID)
+  local _, _, _, stddevs = cookieObjects:getStatistics(edgeImg)
+  for i = 1, #stddevs do
+    if stddevs[i] > 40 then
+      viewer:addPixelRegion(cookieObjects[i], decoFail)
       failedCookies = failedCookies + 1
     else
-      viewer:addPixelRegion(cookieObjects[i], decoPass, nil, imageID)
+      viewer:addPixelRegion(cookieObjects[i], decoPass)
     end
     viewer:present() -- presenting single steps
     Script.sleep(DELAY) -- for demonstration purpose only
